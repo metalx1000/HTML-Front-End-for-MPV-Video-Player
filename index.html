@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Video Player</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function(){
+        loadVideos();
+        $("#icons").on('click','a',play);
+      });
+
+      function loadVideos(){
+        $.get('cgi-bin/thumbs_create.cgi',function(data){
+          var videos = data.split('\n');
+          videos.forEach(function(v){
+            if(v != ""){
+              icons(v);
+            }
+          });
+        });
+      }
+
+      function icons(ico){
+        $("#icons").append('<div class="col-lg-3 col-md-4 col-xs-6">'+
+        '  <a id="'+ico+'" class="d-block mb-4 h-100 vidth">'+
+        '    <img class="img-fluid img-thumbnail" src="thumbs/'+ico+'.png" alt="">'+
+        '  </a>'+
+        '</div>');
+      }
+
+      function play(){
+        var video=$(this).attr('id');
+        $.get('cgi-bin/play.cgi?vid='+video,function(){})
+      }
+    </script>
+  </head>
+  <body>
+
+    <div id="main" class="container">
+      <div id="icons" class="row">
+
+      </div>
+    </div>
+
+  </body>
+</html>
+
