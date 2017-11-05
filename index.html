@@ -12,25 +12,29 @@
       $(document).ready(function(){
         loadVideos();
         $("#icons").on('click','a',play);
+        setInterval(getThumbs,1000);
       });
 
       function loadVideos(){
         $.get('cgi-bin/thumbs_create.cgi',function(data){
-          var videos = data.split('\n');
-          videos.forEach(function(v){
-            if(v != ""){
-              icons(v);
-            }
-          });
         });
       }
 
-      function icons(ico){
-        $("#icons").append('<div class="col-lg-3 col-md-4 col-xs-6">'+
-        '  <a id="'+ico+'" class="d-block mb-4 h-100 vidth">'+
-        '    <img class="img-fluid img-thumbnail" src="thumbs/'+ico+'.png" alt="">'+
-        '  </a>'+
-        '</div>');
+      function getThumbs(){
+        $.get('cgi-bin/thumbs_list.cgi',function(data){
+          var thumbs = data.split('\n');
+          $("#icons").html("");
+          thumbs.forEach(function(t){
+            if(t != ""){
+              var video = t.replace(".png","")
+              $("#icons").append('<div class="col-lg-3 col-md-4 col-xs-6">'+
+                '  <a id="'+video+'" class="d-block mb-4 h-100 vidth">'+
+                  '    <img class="img-fluid img-thumbnail" src="thumbs/'+t+'" alt="">'+
+                  '  </a>'+
+                '</div>');
+            }
+          });
+        });
       }
 
       function play(){

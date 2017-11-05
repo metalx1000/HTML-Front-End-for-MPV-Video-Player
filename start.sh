@@ -8,4 +8,4 @@ then
 fi
 
 echo "Starting Busybox..."
-busybox httpd -p8080 && echo "Busybox Started" || echo "Busybox Server Failed..."
+busybox httpd -p8080 && echo "Busybox Started on port 8080" || echo "Busybox Server Failed..."
